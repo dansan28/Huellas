@@ -39,8 +39,10 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
   Future<TravelEntry?> _load() => DependencyScope.of(context).entries.getById(widget.entry.id!);
 
   Future<void> _edit() async {
-    final updated = await Navigator.pushNamed<TravelEntry>(context, AppRoutes.entryForm, arguments: _latest);
-    if (updated != null && mounted) {
+    // Sin parámetro de tipo: onGenerateRoute crea Route<dynamic> y un
+    // pushNamed<TravelEntry> fallaría al convertir la ruta.
+    final updated = await Navigator.pushNamed(context, AppRoutes.entryForm, arguments: _latest);
+    if (updated is TravelEntry && mounted) {
       setState(() {
         _latest = updated;
         _future = _load();
@@ -95,7 +97,9 @@ class _EntryDetailScreenState extends State<EntryDetailScreen> {
               : 'No se pudo cargar la entrada.';
           return Scaffold(
             appBar: AppBar(),
-            body: ErrorView(message: msg, onRetry: () => setState(() => _future = _load())),
+            body: ErrorView(message: msg, onRetry: () => setState(() {
+              _future = _load();
+            })),
           );
         }
         final entry = snapshot.data;

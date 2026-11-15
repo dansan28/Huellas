@@ -406,7 +406,7 @@ class _EntryFormScreenState extends State<EntryFormScreen> {
     final theme = Theme.of(context);
     final saving = _savingStep != null;
 
-    return PopScope<TravelEntry>(
+    return PopScope<Object?>(
       canPop: (!_dirty || _saved) && !saving,
       onPopInvokedWithResult: (didPop, _) async {
         if (didPop) {
@@ -636,7 +636,8 @@ class _PhotoSection extends StatelessWidget {
             )
           : Container(
               key: const ValueKey('empty'),
-              height: 170,
+              constraints: const BoxConstraints(minHeight: 170),
+              padding: const EdgeInsets.symmetric(vertical: 16),
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 border: Border.all(color: scheme.outlineVariant, width: 1.5),
@@ -649,15 +650,18 @@ class _PhotoSection extends StatelessWidget {
                   const SizedBox(height: 8),
                   const Text('Ilustra tu día con una foto'),
                   const SizedBox(height: 12),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
+                  // Wrap en lugar de Row: con letra grande pasa a dos líneas
+                  // en vez de desbordarse.
+                  Wrap(
+                    alignment: WrapAlignment.center,
+                    spacing: 12,
+                    runSpacing: 8,
                     children: [
                       FilledButton.tonalIcon(
                         onPressed: onCamera,
                         icon: const Icon(Icons.photo_camera_outlined),
                         label: const Text('Cámara'),
                       ),
-                      const SizedBox(width: 12),
                       OutlinedButton.icon(
                         onPressed: onGallery,
                         icon: const Icon(Icons.photo_library_outlined),

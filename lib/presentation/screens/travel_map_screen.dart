@@ -34,7 +34,9 @@ class _TravelMapScreenState extends State<TravelMapScreen> {
 
   Future<List<TravelEntry>> _load() => DependencyScope.of(context).entries.getAll();
 
-  void _reload() => setState(() => _future = _load());
+  void _reload() => setState(() {
+        _future = _load();
+      });
 
   Future<void> _showPreview(TravelEntry entry) async {
     final open = await showModalBottomSheet<bool>(

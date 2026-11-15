@@ -15,9 +15,11 @@ class AppDrawer extends StatelessWidget {
   final String currentRoute;
 
   void _go(BuildContext context, String route) {
-    Navigator.pop(context); // cierra el drawer
-    if (route == currentRoute) return;
+    // Se obtiene el Navigator antes de cerrar el drawer: después, este
+    // context empieza a desmontarse y ya no es seguro usarlo.
     final nav = Navigator.of(context);
+    nav.pop(); // cierra el drawer
+    if (route == currentRoute) return;
     if (route == AppRoutes.home) {
       nav.popUntil(ModalRoute.withName(AppRoutes.home));
     } else if (currentRoute == AppRoutes.home || route == AppRoutes.entryForm) {
@@ -28,8 +30,9 @@ class AppDrawer extends StatelessWidget {
   }
 
   void _lock(BuildContext context) {
-    Navigator.pop(context);
-    Navigator.of(context).pushNamedAndRemoveUntil(AppRoutes.login, (_) => false);
+    final nav = Navigator.of(context);
+    nav.pop();
+    nav.pushNamedAndRemoveUntil(AppRoutes.login, (_) => false);
   }
 
   @override
@@ -84,7 +87,7 @@ class AppDrawer extends StatelessWidget {
         const NavigationDrawerDestination(
           icon: Icon(Icons.map_outlined),
           selectedIcon: Icon(Icons.map),
-          label: Text('Mapa de mis viajes'),
+          label: Text('Mapa de viajes'),
         ),
         const NavigationDrawerDestination(
           icon: Icon(Icons.settings_outlined),

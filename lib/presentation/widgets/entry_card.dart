@@ -73,8 +73,10 @@ class EntryCard extends StatelessWidget {
                       children: [
                         Icon(entry.category.icon, size: 14, color: scheme.outline),
                         const SizedBox(width: 4),
-                        Text(entry.category.label, style: theme.textTheme.labelSmall),
-                        const Spacer(),
+                        Expanded(
+                          child: Text(entry.category.label,
+                              maxLines: 1, overflow: TextOverflow.ellipsis, style: theme.textTheme.labelSmall),
+                        ),
                         if (entry.hasAudio) ...[
                           Icon(Icons.graphic_eq, size: 14, color: scheme.outline),
                           const SizedBox(width: 6),

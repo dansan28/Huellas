@@ -49,12 +49,14 @@ class _EntryListScreenState extends State<EntryListScreen> with RouteAware {
 
   Future<List<TravelEntry>> _load() => DependencyScope.of(context).entries.getAll();
 
-  void _reload() => setState(() => _future = _load());
+  void _reload() => setState(() {
+        _future = _load();
+      });
 
   Future<void> _openForm() => Navigator.pushNamed(context, AppRoutes.entryForm);
 
   Future<void> _openDetail(TravelEntry entry) async {
-    final deleted = await Navigator.pushNamed<bool>(context, AppRoutes.entryDetail, arguments: entry);
+    final deleted = await Navigator.pushNamed(context, AppRoutes.entryDetail, arguments: entry);
     if (deleted == true && mounted) context.showSnack('Entrada eliminada');
   }
 
@@ -114,10 +116,11 @@ class _EntryListScreenState extends State<EntryListScreen> with RouteAware {
           return Column(
             children: [
               // Recargas posteriores: barra delgada sin ocultar la lista.
-              AnimatedOpacity(
-                opacity: loading ? 1 : 0,
-                duration: const Duration(milliseconds: 200),
-                child: const LinearProgressIndicator(minHeight: 2),
+              // Solo existe mientras carga (una barra indeterminada invisible
+              // seguiría animándose y gastando batería).
+              SizedBox(
+                height: 2,
+                child: loading ? const LinearProgressIndicator(minHeight: 2) : null,
               ),
               _TripFilter(
                 trips: trips,
@@ -201,12 +204,13 @@ class _Summary extends StatelessWidget {
     final style = Theme.of(context).textTheme.labelMedium?.copyWith(color: Theme.of(context).colorScheme.outline);
     return Padding(
       padding: const EdgeInsets.fromLTRB(20, 0, 20, 8),
-      child: Row(
-        children: [
-          Text('${entries.length} ${entries.length == 1 ? 'entrada' : 'entradas'}', style: style),
-          Text('  ·  $photos fotos', style: style),
-          Text('  ·  $places ${places == 1 ? 'lugar' : 'lugares'}', style: style),
-        ],
+      child: Text(
+        '${entries.length} ${entries.length == 1 ? 'entrada' : 'entradas'}'
+        '  ·  $photos ${photos == 1 ? 'foto' : 'fotos'}'
+        '  ·  $places ${places == 1 ? 'lugar' : 'lugares'}',
+        style: style,
+        maxLines: 1,
+        overflow: TextOverflow.ellipsis,
       ),
     );
   }

@@ -24,7 +24,8 @@ class LocationService {
 
   final Duration gpsTimeout;
   final Duration geocodeTimeout;
-  final Geocoding _geocoding = Geocoding();
+  /// Se crea al primer uso (no al construir el servicio).
+  late final Geocoding _geocoding = Geocoding();
 
   /// Abre los ajustes de ubicación del sistema (para encender el GPS).
   Future<bool> openLocationSettings() => Geolocator.openLocationSettings();

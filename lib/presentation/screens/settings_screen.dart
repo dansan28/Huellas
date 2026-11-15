@@ -39,7 +39,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
     if (result.isSuccess) {
       await deps.preferences.setBiometricEnabled(value);
       if (!mounted) return;
-      setState(() => _biometricFuture = Future.value(value));
+      setState(() {
+        _biometricFuture = Future.value(value);
+      });
       context.showSnack(value ? 'Diario protegido con biometría' : 'Protección desactivada');
     } else {
       context.showSnack(result.message, isError: true);
