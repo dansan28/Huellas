@@ -6,7 +6,8 @@ plugins {
 
 android {
     namespace = "mx.edu.anahuac.huellas"
-    compileSdk = flutter.compileSdkVersion
+    // Un plugin (geolocator/record) exige compilar contra la API 37.
+    compileSdk = 37
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
