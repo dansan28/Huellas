@@ -4,6 +4,12 @@ App Flutter para guardar recuerdos de viaje con **foto**, **texto dictado por vo
 
 Proyecto del Parcial 2 — Programación de Dispositivos Móviles.
 
+Repositorio: https://github.com/dansan28/Huellas
+
+```bash
+git clone https://github.com/dansan28/Huellas.git
+```
+
 ## Funcionalidades
 
 | Área | Qué hace |
